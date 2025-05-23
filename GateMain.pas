@@ -152,32 +152,40 @@ begin
     s3   := ReadString('server', 'Server3', '');
     s4   := ReadString('server', 'Server4', '');
     s5   := ReadString('server', 'Server5', '');
+    ServerPort := 5500; // Hardcode ServerPort
   end;
+  sidx := 0; // Force selection of the first server slot
+  s1 := '127.0.0.1'; // Hardcode address for the first server slot
+  // Optionally clear s2-s5 or ensure CbAddrs only gets one entry
+  CbAddrs.Items.Clear; // Clear any predefined items if any from design time
+  CbAddrs.Items.Add(s1 + ' (0)'); // Add only the hardcoded server
+  CbAddrs.ItemIndex := 0;
+  ServerIndex := 0;
   n := 0;
-  if s1 <> '' then begin
-    CbAddrs.Items.Add(s1 + ' (' + IntToStr(n) + ')');
-    Inc(n);
-  end;
-  if s2 <> '' then begin
-    CbAddrs.Items.Add(s2 + ' (' + IntToStr(n) + ')');
-    Inc(n);
-  end;
-  if s3 <> '' then begin
-    CbAddrs.Items.Add(s3 + ' (' + IntToStr(n) + ')');
-    Inc(n);
-  end;
-  if s4 <> '' then begin
-    CbAddrs.Items.Add(s4 + ' (' + IntToStr(n) + ')');
-    Inc(n);
-  end;
-  if s5 <> '' then begin
-    CbAddrs.Items.Add(s5 + ' (' + IntToStr(n) + ')');
-    Inc(n);
-  end;
-  if sidx < CbAddrs.Items.Count then begin
-    CbAddrs.ItemIndex := sidx;
-    ServerIndex := sidx;
-  end;
+  //if s1 <> '' then begin
+  //  CbAddrs.Items.Add(s1 + ' (' + IntToStr(n) + ')');
+  //  Inc(n);
+  //end;
+  //if s2 <> '' then begin
+  //  CbAddrs.Items.Add(s2 + ' (' + IntToStr(n) + ')');
+  //  Inc(n);
+  //end;
+  //if s3 <> '' then begin
+  //  CbAddrs.Items.Add(s3 + ' (' + IntToStr(n) + ')');
+  //  Inc(n);
+  //end;
+  //if s4 <> '' then begin
+  //  CbAddrs.Items.Add(s4 + ' (' + IntToStr(n) + ')');
+  //  Inc(n);
+  //end;
+  //if s5 <> '' then begin
+  //  CbAddrs.Items.Add(s5 + ' (' + IntToStr(n) + ')');
+  //  Inc(n);
+  //end;
+  //if sidx < CbAddrs.Items.Count then begin
+  //  CbAddrs.ItemIndex := sidx;
+  //  ServerIndex := sidx;
+  //end;
 
   //   onaddr := 1;
   //   SetSockOpt (ServerSocket.Socket.SocketHandle, SOL_SOCKET, SO_REUSEADDR, @onaddr, sizeof(integer));
@@ -730,10 +738,9 @@ begin
       tryconntime := GetTickCount;
       with ClientSocket do begin
         Active  := False;
-        Port    := ServerPort + ServerIndex;
-        Address := cbAddrs.Items[ServerIndex];
-        if Address <> '' then
-          Active := True;
+        Port    := ServerPort; // ServerPort is already hardcoded to 5500, ServerIndex effect removed for port
+        Address := '127.0.0.1'; // Hardcode Address
+        Active := True; // Connect unconditionally to the hardcoded address
       end;
     end;
   end else begin
